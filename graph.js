@@ -33,9 +33,34 @@ var Edge   = Backbone.Model.extend({
   defaults:  {
     type: 'edge'
   },
+	initialize: function(){
+		this.line = canvas.display.line({
+			start: { x: 0, y: 0 },
+			end: { x: 100, y: 100 },
+			stroke: "5px #079",
+			cap: "round"
+		});
+		this.drawn = false;
+	},
   render: function(){
+		var line = this.line;
+		if(this.drawn){
+			canvas.removeChild(line);
+		}
+    line.start = this.get_start();
+    line.end = this.get_end();
+    canvas.addChild(line);
+		this.drawn = true;
+  },
+	get_start: function(){
+			var temp_start = this.get("start");
+			return {x: temp_start.get("x") , y: temp_start.get("y")};
+	},
+	get_end: function(){
+		var temp_end = this.get("end");
+		return {x: temp_end.get("x") , y: temp_end.get("y")};
+	}
 
-  }
 });
 
 var Part   = Backbone.Model.extend({
@@ -76,5 +101,9 @@ function addCorner(){
 canvas.bind("click", addCorner )
 
 var p = new Corner({ x : 500 , y: 20});
+var q = new Corner({ x : 300 , y: 200});
+var e = new Edge({start: p, end: q});
 graph.add(p);
-p.set("x", 100)
+graph.add(q);
+graph.add(e);
+//p.set("x", 100)
