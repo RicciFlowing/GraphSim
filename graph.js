@@ -6,16 +6,25 @@ var Corner = Backbone.Model.extend({
   defaults:  {
     type: 'corner',
     x: canvas.width/2,
-    y: canvas.height/2,
+    y: canvas.height/2
   },
-  render: function(){
-    var circle = canvas.display.ellipse({
-      x: this.get('x'),
-      y: this.get('y'),
-      radius: 60,
+	initialize: function(){
+		this.circle = canvas.display.ellipse({
+      radius: 10,
       fill: "#079"
     });
+		this.drawn = false;
+
+	},
+  render: function(){
+		var circle = this.circle;
+		if(this.drawn){
+			canvas.removeChild(circle);
+		}
+    circle.x = this.get("x");
+    circle.y = this.get("y");
     canvas.addChild(circle);
+		this.drawn = true;
   }
 });
 
@@ -42,34 +51,30 @@ var Part   = Backbone.Model.extend({
    }
 });
 
-var Graph  = Backbone.Collection.extend({model: Part});
+var Graph  = Backbone.Collection.extend({
+  model: Part,
+  render: function(){
+    this.each(function(part){
+      part.render();
+      });
+  }
+  });
 
-var graph1 = new Graph();
+var graph = new Graph();
+
+function render_part(part){ part.render();};
+
+graph.on("add",render_part);
+graph.on("change:x",render_part);
+graph.on("change:y",render_part);
+
+function addCorner(){
+  var p = new Corner({ x : canvas.mouse.x , y: canvas.mouse.y});
+  graph.add(p);
+};
+
+canvas.bind("click", addCorner )
+
 var p = new Corner({ x : 500 , y: 20});
-p.render();
-graph1.add(p);
-
-
-
-var button = canvas.display.rectangle({
-	x: canvas.width / 2,
-	y: canvas.width / 5,
-	origin: { x: "center", y: "center" },
-	width: 300,
-	height: 40,
-	fill: "#079",
-	stroke: "10px #079",
-	join: "round"
-});
-var buttonText = canvas.display.text({
-	x: 0,
-	y: 0,
-	origin: { x: "center", y: "center" },
-	align: "center",
-	font: "bold 25px sans-serif",
-	text: "Toggle Rotation",
-	fill: "#fff"
-});
-button.addChild(buttonText);
-
-canvas.addChild(button);
+graph.add(p);
+p.set("x", 100)
