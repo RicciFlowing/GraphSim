@@ -117,10 +117,6 @@ function GraphEdit(graph_to_edit, target_canvas){
 		graph_to_edit.add(p);
 	};
 
-	this.corner_selected = true;
-	this.start_corner = {};
-	this.end_corner = {};
-
 	this.addEdge = function(){
 		if(!this.corner_selected){
 			this.start_corner = graph_to_edit.find_nearest_corner(target_canvas.mouse.x,target_canvas.mouse.y);
@@ -142,7 +138,9 @@ function GraphEdit(graph_to_edit, target_canvas){
 	};
 
 	this.set_edge_mode = function(){
-		var context = this;
+		canvas.start_corner = {};
+		canvas.end_corner = {};
+		canvas.corner_selected = false;
 		target_canvas.unbind("click", this.addCorner );
 		target_canvas.bind("click", this.addEdge );
 	};
@@ -152,6 +150,17 @@ function GraphEdit(graph_to_edit, target_canvas){
 
 var menu = new GraphEdit(graph, canvas);
 menu.set_edge_mode();
+canvas.bind("keydown",		function() {
+	var key = canvas.keyboard.getKeysDown();
+		if(key == 69 ){
+			 menu.set_edge_mode();
+			console.log("hello");
+			}
+		if(key == 67 ){
+			menu.set_corner_mode();
+		}
+		});
+
 
 var p = new Corner({ x : 500 , y: 20});
 var q = new Corner({ x : 300 , y: 200});
