@@ -76,13 +76,29 @@ var Part   = Backbone.Model.extend({
    }
 });
 
+function distance(x1,y1,x2,y2){ return Math.sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2))};
+
 var Graph  = Backbone.Collection.extend({
   model: Part,
   render: function(){
     this.each(function(part){
       part.render();
       });
-  }
+  },
+	find_nearest_corner: function(x,y){
+		var nearest_corner =  {};
+		var min_distance = 10000000.0;
+
+		this.each(function(part){
+			if(part.get("type") == 'corner'){
+				if( distance(x,y, part.get("x"), part.get("y"))< min_distance ){
+					nearest_corner = part;
+					min_distance = distance(x,y, part.get("x"), part.get("y"));
+				};
+			}
+		});
+		return nearest_corner;
+	}
   });
 
 var graph = new Graph();
@@ -93,17 +109,54 @@ graph.on("add",render_part);
 graph.on("change:x",render_part);
 graph.on("change:y",render_part);
 
-function addCorner(){
-  var p = new Corner({ x : canvas.mouse.x , y: canvas.mouse.y});
-  graph.add(p);
+
+
+function GraphEdit(graph_to_edit, target_canvas){
+	this.addCorner = function(){
+	  var p = new Corner({ x : target_canvas.mouse.x , y: target_canvas.mouse.y});
+		graph_to_edit.add(p);
+	};
+
+	this.corner_selected = true;
+	this.start_corner = {};
+	this.end_corner = {};
+
+	this.addEdge = function(){
+		if(!this.corner_selected){
+			this.start_corner = graph_to_edit.find_nearest_corner(target_canvas.mouse.x,target_canvas.mouse.y);
+			this.corner_selected = true;
+		}
+		else {
+			this.end_corner = graph_to_edit.find_nearest_corner(target_canvas.mouse.x,target_canvas.mouse.y);
+			var edge = new Edge({start: this.start_corner, end: this.end_corner});
+			graph_to_edit.add(edge);
+			this.corner_selected = false;
+			this.start_corner = {};
+			this.end_corner = {};
+		}
+	};
+
+	this.set_corner_mode = function(){
+		target_canvas.unbind("click", this.addEdge);
+		target_canvas.bind("click", this.addCorner );
+	};
+
+	this.set_edge_mode = function(){
+		var context = this;
+		target_canvas.unbind("click", this.addCorner );
+		target_canvas.bind("click", this.addEdge );
+	};
+
+
 };
 
-canvas.bind("click", addCorner )
+var menu = new GraphEdit(graph, canvas);
+menu.set_edge_mode();
 
 var p = new Corner({ x : 500 , y: 20});
 var q = new Corner({ x : 300 , y: 200});
 var e = new Edge({start: p, end: q});
 graph.add(p);
 graph.add(q);
-graph.add(e);
+//graph.add(e);
 //p.set("x", 100)
