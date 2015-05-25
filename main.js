@@ -7,7 +7,7 @@ graph.on("change:x",render_part);
 graph.on("change:y",render_part);
 
 var menu = new GraphEdit(graph, canvas);
-menu.set_edge_mode();
+menu.set_corner_mode();
 canvas.bind("keydown",		function() {
 	var key = canvas.keyboard.getKeysDown();
 		if(key == 69 ){
