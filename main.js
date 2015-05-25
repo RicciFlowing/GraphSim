@@ -18,12 +18,3 @@ canvas.bind("keydown",		function() {
 			menu.set_corner_mode();
 		}
 		});
-
-
-var p = new Corner({ x : 500 , y: 20});
-var q = new Corner({ x : 300 , y: 200});
-var e = new Edge({start: p, end: q});
-graph.add(p);
-graph.add(q);
-//graph.add(e);
-//p.set("x", 100)
