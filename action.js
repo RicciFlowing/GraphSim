@@ -4,27 +4,46 @@ function Action(graph){
 
 Action.prototype = {
  init: function(){},
- shutdown: function(){}
+ shutdown: function(){},
+ eventListener: function(){}
 };
 
+function ActionFactory(graph){
+  this.graph = graph;
+};
+
+ActionFactory.prototype = {
+  getAction: function(events){
+    if (typeof events === 'string') {events = [events];}
+    var action = new Action(this.graph);
+    action.init = function(){
+      var context = this;
+      _.each(events, function(event){
+        document.addEventListener(event, context.eventListener.bind(action));
+      });
+    };
+    action.shutdown = function(){
+        _.each(events, function(event){
+          document.removeEventListener(event, context.eventListener);
+        });
+    };
+    return action;
+  }
+};
 
 
 function UserInterface(controller){
   this.controller = controller;
-  var add_vertex = new Action(this.controller.graph);
+  action_factory = new ActionFactory(this.controller.graph);
 
-  add_vertex.prototype = {
-    eventListener: function(point_event){
+  var add_vertex = action_factory.getAction("point_selected");
+  add_vertex.eventListener = function(point_event){
                     this.graph.addVertex(new Vertex(point_event.point.x,point_event.point.y));
                     controller.render();
-                  },
+                  };
 
-    init: function(){
-          document.addEventListener("point_selected", this.eventListener.bind(this));
-        }
-  }
 
-  var add_edge = new Action(this.controller.graph);
+  var add_edge = action_factory.getAction("vertex_selected");
   add_edge.start = 0;
 
   add_edge.eventListener= function(vertex_event){
@@ -33,18 +52,10 @@ function UserInterface(controller){
                     }
                     else {
                       this.graph.addEdge(new Edge(this.start, vertex_event.vertex));
-                      console.log(this.start);
                       controller.render();
                       this.start = 0;
                     }
                   };
-
-  add_edge.init=  function(){
-          document.addEventListener("vertex_selected", this.eventListener.bind(this));
-        };
-
-
-
 
   add_edge.init();
   this.current_action = add_edge;
