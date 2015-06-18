@@ -21,20 +21,31 @@ Template.prototype ={
 
 var template = new Template(canvas);
 
+var vertex_selected = new Event("vertex_selected");
+var edge_selected = new Event("edge_selected");
+
 function View(model, template){
   this.model = model;
   this.template = template;
-  this.shape = {};
+  if(this.model instanceof Vertex){
+    this.shape = this.template.getVertexShape(this.model);
+    this.shape.bind("click", function(){
+      vertex_selected.vertex = this.model;
+      document.dispatchEvent(vertex_selected);
+    });
+  }
+  else{ //must be an edge
+    this.shape = this.template.getEdgeShape(this.model);
+    this.shape.bind("click", function(){
+      edge_selected.edge = this.model;
+      document.dispatchEvent(edge_selected);
+    });
+  }
+
 }
 
 View.prototype = {
   getShape: function(){
-            if(this.model instanceof Vertex){
-              this.shape = this.template.getVertexShape(this.model);
-            }
-            else{ //must be an edge
-              this.shape = this.template.getEdgeShape(this.model);
-            }
             this.fillTemplate(this.model, this.shape);
             return this.shape;
           },
