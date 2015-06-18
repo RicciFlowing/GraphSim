@@ -6,8 +6,6 @@ graph.addVertex(w);
 //var e = new Edge(v,w);
 //graph.addEdge(e);
 
-document.addEventListener("vertex_selected",function(evt){ console.log(evt.vertex);});
-
 var graph_controller = new Controller(graph, canvas);
 var ui = new UserInterface(graph_controller);
 graph_controller.render();
