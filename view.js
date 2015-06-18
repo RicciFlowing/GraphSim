@@ -35,15 +35,17 @@ function View(model, template){
   this.template = template;
   if(this.model instanceof Vertex){
     this.shape = this.template.getVertexShape(this.model);
+    var context = this;
     this.shape.bind("click", function(){
-      vertex_selected.vertex = this.model;
+      vertex_selected.vertex = context.model;
       document.dispatchEvent(vertex_selected);
     });
   }
   else{ //must be an edge
     this.shape = this.template.getEdgeShape(this.model);
+    var context = this;
     this.shape.bind("click", function(){
-      edge_selected.edge = this.model;
+      edge_selected.edge = context.model;
       document.dispatchEvent(edge_selected);
     });
   }
