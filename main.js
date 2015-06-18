@@ -6,6 +6,5 @@ graph.addVertex(w);
 var e = new Edge(v,w);
 graph.addEdge(e);
 
-
 var graph_controller = new Controller(graph, canvas);
 graph_controller.render();
