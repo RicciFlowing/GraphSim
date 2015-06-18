@@ -61,10 +61,10 @@ function UserInterface(controller){
   this.current_action = add_vertex;
 };
 
-Userinterface.prototype = {
+UserInterface.prototype = {
   setAction: function(action){
     this.current_action.shutdown();
     action.init()
     this.current_action = action;
-  };
+  }
 };
