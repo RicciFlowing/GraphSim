@@ -1,0 +1,9 @@
+#canvas {
+  margin-top: 50px;
+  margin-left: 10%;
+  border-style: solid;
+  border-width: 5px;
+  height: 800px;
+  width: 80%;
+  border-radius: 10px; 
+}
