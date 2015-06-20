@@ -39,7 +39,6 @@ function UserInterface(controller){
   var add_vertex = action_factory.getAction("point_selected");
   add_vertex.eventListener = function(point_event){
                     this.graph.addVertex(new Vertex(point_event.point.x,point_event.point.y));
-                    controller.render();
                   };
 
 
@@ -52,7 +51,6 @@ function UserInterface(controller){
                     }
                     else {
                       this.graph.addEdge(new Edge(this.start, vertex_event.vertex));
-                      controller.render();
                       this.start = 0;
                     }
                   };

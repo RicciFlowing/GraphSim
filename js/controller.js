@@ -4,20 +4,19 @@ function Controller(graph, canvas){
   this.idcounter = 0;
   this.graph = graph;
 
-  document.addEventListener("model_added", this.createView.bind(this));
+  document.addEventListener("model_added", this.render.bind(this));
 
 };
 
 Controller.prototype = {
-  createView: function(event){
-       var element = {id: this.idcounter++,  model: event.model, view: new View(event.model, template) };
+  createView: function(model){
+       var element = {id: this.idcounter++,  model: model, view: new View(model, template) };
        this.elements.push(element);
-       this.render();
+       return element;
   },
-  render: function(){
-      _.each(this.elements, function(element){
-          var shape = element.view.getShape();
-          this.canvas.addChild(shape);
-      });
+  render: function(event){
+      var element = this.createView(event.model);
+      var shape = element.view.getShape();
+      this.canvas.addChild(shape);
     }
 };
