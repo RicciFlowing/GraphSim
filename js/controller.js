@@ -1,6 +1,7 @@
-function Controller(graph, canvas){
+GraphSim = (function(oldModule){
+
+function Controller(graph){
   this.elements = [];
-  this.canvas = canvas;
   this.idcounter = 0;
   this.graph = graph;
 
@@ -10,13 +11,19 @@ function Controller(graph, canvas){
 
 Controller.prototype = {
   createView: function(model){
-       var element = {id: this.idcounter++,  model: model, view: new View(model, template) };
+       var element = {id: this.idcounter++,  model: model, view: new GraphSim.View(model) };
        this.elements.push(element);
        return element;
   },
   render: function(event){
       var element = this.createView(event.model);
       var shape = element.view.getShape();
-      this.canvas.addChild(shape);
+      GraphSim.canvas.addChild(shape);
     }
 };
+
+oldModule.controller = new Controller(GraphSim.getGraph());
+
+return oldModule;
+
+})(GraphSim);

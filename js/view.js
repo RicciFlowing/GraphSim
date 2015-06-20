@@ -1,4 +1,7 @@
+GraphSim = (function(oldModule){
 var canvas = oCanvas.create({canvas: "#canvas"});
+
+oldModule.canvas = canvas;
 
 function Template(canvas){
   this.canvas = canvas;
@@ -19,18 +22,20 @@ Template.prototype ={
   }
 };
 
-var template = new Template(canvas);
 
 var point_selected = new Event("point_selected");
 var vertex_selected = new Event("vertex_selected");
 var edge_selected = new Event("edge_selected");
 
-canvas.bind("click", function(){
+oldModule.canvas.bind("click", function(){
   point_selected.point = {x: canvas.mouse.x, y: canvas.mouse.y};
   document.dispatchEvent(point_selected);
 });
 
-function View(model, template){
+
+var template = new Template(oldModule.canvas);
+
+var View = function(model){
   this.model = model;
   this.template = template;
   this.setShape();
@@ -46,7 +51,7 @@ View.prototype = {
           shape_template[key] = value;
       });
     },
-  setShape: function(){  if(this.model instanceof Vertex){
+  setShape: function(){  if(this.model.type ==="vertex"){
       this.shape = this.template.getVertexShape(this.model);
       var context = this;
       this.shape.bind("click", function(){
@@ -63,3 +68,14 @@ View.prototype = {
       });
     }}
 };
+
+oldModule.View = View;
+oldModule.setCanvas = function(canvas_id){
+  canvas = oCanvas.create({canvas: canvas_id});
+};
+
+
+
+return oldModule;
+
+})(GraphSim);

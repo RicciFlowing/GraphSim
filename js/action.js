@@ -1,3 +1,4 @@
+GraphSim = (function(oldModule){
 function Action(graph){
   this.graph = graph;
 };
@@ -38,7 +39,7 @@ function UserInterface(controller){
 
   var add_vertex = action_factory.getAction("point_selected");
   add_vertex.eventListener = function(point_event){
-                    this.graph.addVertex(new Vertex(point_event.point.x,point_event.point.y));
+                    this.graph.addVertex(point_event.point.x,point_event.point.y);
                   };
 
 
@@ -50,7 +51,7 @@ function UserInterface(controller){
                       this.start = vertex_event.vertex;
                     }
                     else {
-                      this.graph.addEdge(new Edge(this.start, vertex_event.vertex));
+                      this.graph.addEdge(this.start, vertex_event.vertex);
                       this.start = 0;
                     }
                   };
@@ -66,3 +67,9 @@ UserInterface.prototype = {
     this.current_action = action;
   }
 };
+
+oldModule.ui = new UserInterface(oldModule.controller);
+
+return oldModule;
+
+})(GraphSim);
