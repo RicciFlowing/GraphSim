@@ -33,23 +33,7 @@ canvas.bind("click", function(){
 function View(model, template){
   this.model = model;
   this.template = template;
-  if(this.model instanceof Vertex){
-    this.shape = this.template.getVertexShape(this.model);
-    var context = this;
-    this.shape.bind("click", function(){
-      vertex_selected.vertex = context.model;
-      document.dispatchEvent(vertex_selected);
-    });
-  }
-  else{ //must be an edge
-    this.shape = this.template.getEdgeShape(this.model);
-    var context = this;
-    this.shape.bind("click", function(){
-      edge_selected.edge = context.model;
-      document.dispatchEvent(edge_selected);
-    });
-  }
-
+  this.setShape();
 }
 
 View.prototype = {
@@ -61,5 +45,21 @@ View.prototype = {
       _.each(data, function(value, key){
           shape_template[key] = value;
       });
+    },
+  setShape: function(){  if(this.model instanceof Vertex){
+      this.shape = this.template.getVertexShape(this.model);
+      var context = this;
+      this.shape.bind("click", function(){
+        vertex_selected.vertex = context.model;
+        document.dispatchEvent(vertex_selected);
+      });
     }
+    else{ //must be an edge
+      this.shape = this.template.getEdgeShape(this.model);
+      var context = this;
+      this.shape.bind("click", function(){
+        edge_selected.edge = context.model;
+        document.dispatchEvent(edge_selected);
+      });
+    }}
 };

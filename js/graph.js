@@ -19,11 +19,17 @@ function Graph(){
   this.edges = [];
 };
 
+var model_added = new Event("model_added");
+
 Graph.prototype = {
   addVertex: function(vertex){
     this.vertices.push(vertex);
+    model_added.model = vertex;
+    document.dispatchEvent(model_added);
   },
   addEdge: function(edge){
     this.edges.push(edge);
+    model_added.model = edge;
+    document.dispatchEvent(model_added);
   }
 };
