@@ -10,14 +10,14 @@ function Template(canvas){
 Template.prototype ={
   getVertexShape: function(){
     return this.canvas.display.ellipse({
-          radius: 10,
-          fill: "#079",
+          radius: 15,
+          fill: "#079"
         });
   },
   getEdgeShape: function(){
      return this.canvas.display.line({
-      stroke: "5px #079",
-      cap: "round",
+      stroke: "3px #079",
+      cap: "round"
     });
   }
 };
@@ -72,6 +72,10 @@ View.prototype = {
 oldModule.View = View;
 oldModule.setCanvas = function(canvas_id){
   canvas = oCanvas.create({canvas: canvas_id});
+  oldModule.canvas.bind("click", function(){
+    point_selected.point = {x: canvas.mouse.x, y: canvas.mouse.y};
+    document.dispatchEvent(point_selected);
+  });
 };
 
 

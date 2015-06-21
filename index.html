@@ -14,17 +14,23 @@
     <link rel="stylesheet" href="css/bootstrap.css"></link>
     <link rel="stylesheet" href="css/graph.css"></link>
   </head>
-  <body>
+<body>
+  <div class="container">
     <h1 class="text-center"> GraphSim </h1>
     <div class="text-center"> Create your graph below </div>
-    <canvas id="canvas" height="800px" width="1200px"></canvas>
-    <ul class="list-group" id="menu">
-      <li class="list-group-item"> Vertex </li>
-      <li class="list-group-item"> Edge </li>
-    </ul>
 
+<div class="row">
+        <ul class= "list-group col-sm-2">
+          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('add_vertex')"> Add Vertex </a>  </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('add_edge')"> Add Edge </a> </li>
+        </ul>
+        <div class="col-sm-10">
+         <canvas id="canvas" width= "1000px" height="800px" ></canvas>
+      </div>
+</div>
     <script src="js/vendor/underscore.js"></script>
     <script src="js/vendor/ocanvas-2.7.3.js"></script>
+    <script src="js/vendor/boostrap.js"></script>
     <script src="js/graph.js"></script>
     <script src="js/view.js"></script>
     <script src="js/controller.js"></script>

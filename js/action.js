@@ -19,13 +19,16 @@ ActionFactory.prototype = {
     var action = new Action(this.graph);
     action.init = function(){
       var context = this;
+      this.actualListener = this.eventListener.bind(action);
       _.each(events, function(event){
-        document.addEventListener(event, context.eventListener.bind(action));
+
+        document.addEventListener(event, context.actualListener);
       });
     };
     action.shutdown = function(){
+      var context = this;
         _.each(events, function(event){
-          document.removeEventListener(event, context.eventListener);
+          document.removeEventListener(event, context.actualListener);
         });
     };
     return action;
@@ -55,13 +58,24 @@ function UserInterface(controller){
                       this.start = 0;
                     }
                   };
+  add_edge.shutdown = function(events){
+    console.log(this);
+    this.start = 0;
+    var context = this;
+      _.each(events, function(event){
+        document.removeEventListener(event, context.actualListener);
+      });
+  };
+
+  this.actions = {add_vertex: add_vertex, add_edge: add_edge };
 
   add_vertex.init();
   this.current_action = add_vertex;
 };
 
 UserInterface.prototype = {
-  setAction: function(action){
+  setAction: function(action_string){
+    var action = this.actions[action_string];
     this.current_action.shutdown();
     action.init()
     this.current_action = action;
@@ -69,6 +83,7 @@ UserInterface.prototype = {
 };
 
 oldModule.ui = new UserInterface(oldModule.controller);
+
 
 return oldModule;
 

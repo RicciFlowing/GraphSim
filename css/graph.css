@@ -1,15 +1,14 @@
 #canvas {
-  margin-top: 50px;
-  margin-left: 10%;
   border-style: solid;
   border-width: 5px;
   border-radius: 10px;
+  float: left;
 }
 
-#menu {
-  margin-top: 50px;
-  margin-right: 50px;
-  float: right;
-  width: 10%;
+.menu {
 
+  width: 100px;
+  position: relative;
+  left: 1050px;
+  top: -700px;
 }

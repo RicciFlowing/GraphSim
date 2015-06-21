@@ -19,6 +19,9 @@ Controller.prototype = {
       var element = this.createView(event.model);
       var shape = element.view.getShape();
       GraphSim.canvas.addChild(shape);
+      if(element.model.type == "edge"){
+        shape.zIndex = "back";
+      }
     }
 };
 
