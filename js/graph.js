@@ -7,10 +7,11 @@ function Vertex(x,y){
 };
 
 
-function Edge(start_vertex, end_vertex, directed = true){
+function Edge(start_vertex, end_vertex, directed ){
  this.id = this.idcounter;
  this.start = start_vertex;
  this.end = end_vertex;
+ directed = directed || true;
  this.is_directed = directed;
  this.type = "edge";
 };
