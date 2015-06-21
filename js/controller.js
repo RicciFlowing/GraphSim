@@ -20,14 +20,19 @@ Controller.prototype = {
         shape.zIndex = "back";
       }
     },
+    redraw: function(){
+      GraphSim.canvas.redraw();
+    },
 
   highlight: function(model){
     var view = _.findWhere(this.views, {model: model});
     view.setHighlight();
+    this.redraw();
   },
   removeHighlight: function(model){
     var view = _.findWhere(this.views, {model: model});
     view.removeHighlight();
+    this.redraw();
   },
 
 

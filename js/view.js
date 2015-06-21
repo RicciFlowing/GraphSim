@@ -71,7 +71,7 @@ View.prototype = {
     this.shape.fill = "#109";
   },
   removeHighlight: function(){
-    this.shape.fill = "#077";
+    this.shape.fill = "#079";
   }
 };
 
