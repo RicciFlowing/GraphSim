@@ -1,28 +1,36 @@
 GraphSim = (function(oldModule){
 
 function Controller(graph){
-  this.elements = [];
-  this.idcounter = 0;
+  this.views = [];
   this.graph = graph;
-
   document.addEventListener("model_added", this.render.bind(this));
-
 };
 
 Controller.prototype = {
   createView: function(model){
-       var element = {id: this.idcounter++,  model: model, view: new GraphSim.View(model) };
-       this.elements.push(element);
-       return element;
+       var view = new GraphSim.View(model);
+       this.views.push(view);
+       return view;
   },
   render: function(event){
-      var element = this.createView(event.model);
-      var shape = element.view.getShape();
+      var view = this.createView(event.model);
+      var shape = view.getShape();
       GraphSim.canvas.addChild(shape);
-      if(element.model.type == "edge"){
+      if(view.model.type == "edge"){
         shape.zIndex = "back";
       }
-    }
+    },
+
+  highlight: function(model){
+    var view = _.findWhere(this.views, {model: model});
+    view.setHighlight();
+  },
+  removeHighlight: function(model){
+    var view = _.findWhere(this.views, {model: model});
+    view.removeHighlight();
+  },
+
+
 };
 
 oldModule.controller = new Controller(GraphSim.getGraph());

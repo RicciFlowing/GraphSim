@@ -66,7 +66,13 @@ View.prototype = {
         edge_selected.edge = context.model;
         document.dispatchEvent(edge_selected);
       });
-    }}
+    }},
+  setHighlight: function(){
+    this.shape.fill = "#109";
+  },
+  removeHighlight: function(){
+    this.shape.fill = "#077";
+  }
 };
 
 oldModule.View = View;

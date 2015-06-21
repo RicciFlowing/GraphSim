@@ -1,31 +1,32 @@
 GraphSim = (function(oldModule){
-function Action(graph){
-  this.graph = graph;
+function Action(controller){
+  this.controller = controller;
 };
 
 Action.prototype = {
  init: function(){},
  shutdown: function(){},
- eventListener: function(){}
+ eventListener: function(){},
+ customShutdown: function(){}
 };
 
-function ActionFactory(graph){
-  this.graph = graph;
+function ActionFactory(controller){
+  this.controller = controller;
 };
 
 ActionFactory.prototype = {
   getAction: function(events){
     if (typeof events === 'string') {events = [events];}
-    var action = new Action(this.graph);
+    var action = new Action(this.controller);
     action.init = function(){
       var context = this;
       this.actualListener = this.eventListener.bind(action);
       _.each(events, function(event){
-
         document.addEventListener(event, context.actualListener);
       });
     };
     action.shutdown = function(){
+      this.customShutdown();
       var context = this;
         _.each(events, function(event){
           document.removeEventListener(event, context.actualListener);
@@ -38,11 +39,11 @@ ActionFactory.prototype = {
 
 function UserInterface(controller){
   this.controller = controller;
-  action_factory = new ActionFactory(this.controller.graph);
+  action_factory = new ActionFactory(this.controller);
 
   var add_vertex = action_factory.getAction("point_selected");
   add_vertex.eventListener = function(point_event){
-                    this.graph.addVertex(point_event.point.x,point_event.point.y);
+                    this.controller.graph.addVertex(point_event.point.x,point_event.point.y);
                   };
 
 
@@ -52,19 +53,16 @@ function UserInterface(controller){
   add_edge.eventListener= function(vertex_event){
                     if(this.start == 0){
                       this.start = vertex_event.vertex;
+                      this.controller.highlight(this.start);
                     }
                     else {
-                      this.graph.addEdge(this.start, vertex_event.vertex);
+                      this.controller.graph.addEdge(this.start, vertex_event.vertex);
+                      this.controller.removeHighlight(this.start);
                       this.start = 0;
                     }
                   };
-  add_edge.shutdown = function(events){
-    console.log(this);
+  add_edge.customShutdown = function(){
     this.start = 0;
-    var context = this;
-      _.each(events, function(event){
-        document.removeEventListener(event, context.actualListener);
-      });
   };
 
   this.actions = {add_vertex: add_vertex, add_edge: add_edge };
