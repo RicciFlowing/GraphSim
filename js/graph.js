@@ -30,6 +30,7 @@ Graph.prototype = {
     this.vertices.push(vertex);
     model_added.model = vertex;
     document.dispatchEvent(model_added);
+    console.log("Hello");
   },
   addEdge: function(start, end){
     var edge = new Edge(start, end);

@@ -62,7 +62,10 @@ function UserInterface(controller){
                     }
                   };
   add_edge.customShutdown = function(){
+    if(this.start!=0){
+    this.controller.removeHighlight(this.start);
     this.start = 0;
+  }
   };
 
   this.actions = {add_vertex: add_vertex, add_edge: add_edge };

@@ -27,7 +27,8 @@ var point_selected = new Event("point_selected");
 var vertex_selected = new Event("vertex_selected");
 var edge_selected = new Event("edge_selected");
 
-oldModule.canvas.bind("click", function(){
+var canvas = oldModule.canvas;
+canvas.bind("click", function(){
   point_selected.point = {x: canvas.mouse.x, y: canvas.mouse.y};
   document.dispatchEvent(point_selected);
 });
