@@ -1,6 +1,9 @@
 var GraphSim = (function(){
+
+var id_counter = 0;
+
 function Vertex(x,y){
-  this.id = this.idcounter;
+  this.id = id_counter++;
   this.x = x;
   this.y = y;
   this.type = "vertex";
@@ -8,7 +11,7 @@ function Vertex(x,y){
 
 
 function Edge(start_vertex, end_vertex, directed ){
- this.id = this.idcounter;
+ //this.id = this.idcounter;
  this.start = start_vertex;
  this.end = end_vertex;
  directed = directed || true;
@@ -19,6 +22,7 @@ function Edge(start_vertex, end_vertex, directed ){
 function Graph(){
   this.vertices = [];
   this.edges = [];
+  this.adjacent = Matrix.Zero(1);
 };
 
 var model_added = new Event("model_added");
@@ -28,18 +32,29 @@ Graph.prototype = {
   addVertex: function(x,y){
     var vertex = new Vertex(x,y);
     this.vertices.push(vertex);
+    this.adjacent.set(1,vertex.id,vertex.id);
     model_added.model = vertex;
     document.dispatchEvent(model_added);
   },
   addEdge: function(start, end){
     var edge = new Edge(start, end);
     this.edges.push(edge);
+    var temp = this.adjacent.get(start.id,end.id);
+    this.adjacent.set(++temp,start.id,end.id);
+    temp = this.adjacent.get(end.id,start.id);          //undirected
+    this.adjacent.set(++temp,end.id,start.id);
     model_added.model = edge;
     document.dispatchEvent(model_added);
   },
   removeEdge: function(edge){
     this.edges = _.difference(this.edges, [edge]);
     model_removed.model = edge;
+    var start = edge.start;
+    var end = edge.end;
+    var temp = this.adjacent.get(start.id,end.id);
+    this.adjacent.set(--temp,start.id,end.id);
+    temp = this.adjacent.get(end.id,start.id);          //undirected
+    this.adjacent.set(--temp,end.id,start.id);
     document.dispatchEvent(model_removed);
   },
   removeVertex: function(vertex){

@@ -1,4 +1,4 @@
-GraphSim.Matrix = (function(){
+var Matrix = (function(){
 
 function Matrix(){
   this.elements = [];
@@ -34,11 +34,11 @@ Matrix.prototype = {
   },
   set: function(value,i,j){
     var dim = this.dimension();
-    if(dim.row < i){
-      this.expand(i);
+    if( i > dim.row -1){
+      this.expand(i + 1);
     }
-    if(dim.col < j){
-      this.expand(j);
+    if( j > dim.col-1){
+      this.expand(j + 1);
     }
     this.elements[i][j] = value;
   },
