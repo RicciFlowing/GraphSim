@@ -1,2 +1,3 @@
-oCanvas.domReady(function(){GraphSim.setCanvas("#canvas");});
+
 var graph = GraphSim.getGraph();
+document.addEventListener("point_selected", function(){console.log("Point Selected");});
