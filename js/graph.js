@@ -16,7 +16,6 @@ function Edge(start_vertex, end_vertex, directed ){
  this.type = "edge";
 };
 
-
 function Graph(){
   this.vertices = [];
   this.edges = [];
