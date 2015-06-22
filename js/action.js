@@ -68,7 +68,13 @@ function UserInterface(controller){
   }
   };
 
-  this.actions = {add_vertex: add_vertex, add_edge: add_edge };
+  var remove_edge = action_factory.getAction("edge_selected");
+  remove_edge.eventListener= function(edge_event){
+                   var edge_to_remove = edge_event.edge;
+                   this.controller.graph.removeEdge(edge_to_remove);
+                  };
+
+  this.actions = {add_vertex: add_vertex, add_edge: add_edge, remove_edge: remove_edge };
 
   add_vertex.init();
   this.current_action = add_vertex;

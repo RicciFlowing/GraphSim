@@ -4,6 +4,7 @@ function Controller(graph){
   this.views = [];
   this.graph = graph;
   document.addEventListener("model_added", this.render.bind(this));
+  document.addEventListener("model_removed", this.removeView.bind(this));
 };
 
 Controller.prototype = {
@@ -34,6 +35,12 @@ Controller.prototype = {
     view.removeHighlight();
     this.redraw();
   },
+  removeView: function(event){
+    var view = _.findWhere(this.views, {model: event.model});
+    GraphSim.canvas.removeChild(view.getShape());
+    this.views = _.difference(this.views);
+    GraphSim.canvas.redraw();
+  }
 
 
 };

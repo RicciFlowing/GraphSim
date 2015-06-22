@@ -23,6 +23,7 @@ function Graph(){
 };
 
 var model_added = new Event("model_added");
+var model_removed = new Event("model_removed");
 
 Graph.prototype = {
   addVertex: function(x,y){
@@ -30,13 +31,17 @@ Graph.prototype = {
     this.vertices.push(vertex);
     model_added.model = vertex;
     document.dispatchEvent(model_added);
-    console.log("Hello");
   },
   addEdge: function(start, end){
     var edge = new Edge(start, end);
     this.edges.push(edge);
     model_added.model = edge;
     document.dispatchEvent(model_added);
+  },
+  removeEdge: function(edge){
+    this.edges = _.difference(this.edges, [edge]);
+    model_removed.model = edge;
+    document.dispatchEvent(model_removed);
   }
 };
 
