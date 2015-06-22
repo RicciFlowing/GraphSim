@@ -42,7 +42,22 @@ Graph.prototype = {
     this.edges = _.difference(this.edges, [edge]);
     model_removed.model = edge;
     document.dispatchEvent(model_removed);
+  },
+  removeVertex: function(vertex){
+    //find all edges starting at the vertex or ending in this vertex
+    var edges_starting_at_vertex = _.where(this.edges, {start: vertex});
+    var edges_ending_at_vertex = _.where(this.edges, {end: vertex});
+    var edges_to_remove = _.union(edges_starting_at_vertex, edges_ending_at_vertex);
+    this.edges = _.difference(this.edges, edges_to_remove);
+    _.each(edges_to_remove, function(edge){
+      model_removed.model = edge;
+      document.dispatchEvent(model_removed);
+    });
+    this.vertices = _.difference(this.vertices, [vertex]);
+    model_removed.model = vertex;
+    document.dispatchEvent(model_removed);
   }
+
 };
 
 var graph = new Graph();
