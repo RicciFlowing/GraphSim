@@ -70,8 +70,20 @@ Graph.prototype = {
     this.vertices = _.difference(this.vertices, [vertex]);
     model_removed.model = vertex;
     document.dispatchEvent(model_removed);
-  }
-
+  },
+  getVertex: function(id){
+    return _.findWhere(this.vertices, {id: id});
+  },
+  getNeighbours: function(vertex){
+    var neighbours = [];
+    _.each(this.adajcent[vertex.id],function(value, id){
+      if(value>0){
+        var neighbour = this.getVertex(id);
+        neighbours.push(neighbour);
+        }
+    });
+    return this.neighbours;
+  },
 };
 
 var graph = new Graph();
