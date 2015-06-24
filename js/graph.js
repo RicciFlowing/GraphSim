@@ -76,13 +76,14 @@ Graph.prototype = {
   },
   getNeighbours: function(vertex){
     var neighbours = [];
-    _.each(this.adajcent[vertex.id],function(value, id){
+    var context = this;
+    _.each(context.adjacent.elements[vertex.id],function(value, id){
       if(value>0){
-        var neighbour = this.getVertex(id);
+        var neighbour = context.getVertex(id);
         neighbours.push(neighbour);
         }
     });
-    return this.neighbours;
+    return neighbours;
   },
 };
 
