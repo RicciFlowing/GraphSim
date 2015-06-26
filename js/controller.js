@@ -35,6 +35,14 @@ Controller.prototype = {
     view.removeHighlight();
     this.redraw();
   },
+  removeAllHighlights: function(){
+    _.each(this.views, function(view){
+      if( view.model.type === "vertex"){
+      view.removeHighlight();
+    }
+    });
+    this.redraw();
+  },
   removeView: function(event){
     var view = _.findWhere(this.views, {model: event.model});
     GraphSim.canvas.removeChild(view.getShape());
