@@ -82,32 +82,12 @@ function UserInterface(controller){
   var find_shortest_path = action_factory.getAction("vertex_selected");
   find_shortest_path.start = 0;
 
-  function Tree(){
-    this.tree = [];
-  };
-  Tree.prototype = {
-    add: function(vertices, prev){
-      if(Array.isArray(vertices) == false) {
-        this.tree.push({vertex: vertices, prev: prev});
-        }
-        else{
-          _.each(vertices, this.add);
-        }
-      },
-    contains: function(vertex){
-      if(typeof(_.findWhere(this.tree, {vertex: vertex}))==='undefined'){
-          return false
-        }
-        else{
-          return true
-        }
-    }
-  };
+
 
   find_shortest_path.eventListener= function(vertex_event){
-
                     if(this.start == 0){
                       this.start = vertex_event.vertex;
+                      this.controller.removeAllHighlights();
                       this.controller.highlight(this.start);
                     }
                     else {
@@ -115,32 +95,53 @@ function UserInterface(controller){
                       var graph = this.controller.graph;
                       this.controller.highlight(end);
 
-                      var search_tree = new Tree();
-
-                      search_tree.add(this.start, false);
-                      var to_be_searched = [{prev: this.start , list: _.without(graph.getNeighbours(this.start), this.start)}];
-                      var searched = graph.getNeighbours(this.start);
+                      var to_be_searched = [{ vertex: this.start, prev: false}];
+                      var visited = [];
+                      var element, adjacent, prev;
+                      var context = this;
 
                       while(to_be_searched.length > 0 ){
-                          var element = to_be_searched.pop();
-                          _.each(element.list, function(vertex){
-                            if( vertex === end){
-                              search_tree.add(vertex, element.prev);
-                              console.log("Yeah");
+                          element = to_be_searched.pop();
+                          visited.push(element);
+                          adjacent = graph.getNeighbours(element.vertex);
+                          prev = element.vertex;
+
+                          while(adjacent.length > 0){
+                            var vertex = adjacent.pop();
+                            if( vertex.id === end.id){
+                              visited.push({vertex: vertex, prev: prev});
+                              context.controller.removeAllHighlights();
+                              _.each(construct_path(visited), function(vertex){
+                                context.controller.highlight(vertex);
+                              });
                               return true;
                             }
-                            var current_neighbours = _.difference(graph.getNeighbours(vertex), searched);
-                            to_be_searched.push({prev: vertex, list: _.without(current_neighbours, vertex)});
-                            searched = _.union(searched,_.without(current_neighbours, vertex) );
-                          });
+                            if(_.where(visited, {vertex: vertex}).length > 0){    // vertex is in visited array
+                            }
+                            else{
+                            to_be_searched.push({vertex: vertex, prev: prev});
+                          }
+                          };
                         }
                       this.start = 0;
                       return false;
                     }
+
+                  function construct_path(list){
+                    var end = _.last(list);
+                    var path = [end.vertex];
+                    var current_vertex = end;
+                    while(current_vertex.prev){
+                      current_vertex = _.findWhere(list, {vertex: current_vertex.prev})
+                      path.push(current_vertex.vertex);
+                    };
+                    return path;
+                  }
+
                   };
   find_shortest_path.customShutdown = function(){
     if(this.start!=0){
-    this.controller.removeHighlight(this.start);
+    this.controller.removeAllHighlights();
     this.start = 0;
   }
 };
