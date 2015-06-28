@@ -98,17 +98,18 @@ function UserInterface(controller){
 
                       var to_be_searched = [{ vertex: this.start, prev: false}];
                       var visited = [];
-                      var element, adjacent, prev;
+                      var element, prev;
                       var context = this;
 
                       while(to_be_searched.length > 0 ){
-                          element = to_be_searched.pop();
+                          element = to_be_searched.shift();
                           visited.push(element);
-                          adjacent = graph.getNeighbours(element.vertex);
+                          var adjacent = graph.getNeighbours(element.vertex);
                           prev = element.vertex;
 
+
                           while(adjacent.length > 0){
-                            var vertex = adjacent.pop();
+                            var vertex = adjacent.shift();
                             if( vertex.id === end.id){
                               visited.push({vertex: vertex, prev: prev});
                               context.controller.removeAllHighlights();
@@ -120,6 +121,10 @@ function UserInterface(controller){
                             if(_.where(visited, {vertex: vertex}).length > 0){    // vertex is in visited array
                             }
                             else{
+                              //DEBUG (Show added vertex)
+                              //  this.controller.removeAllHighlights();
+                              //  this.controller.highlight(vertex);
+                              //DEBUG
                             to_be_searched.push({vertex: vertex, prev: prev});
                           }
                           };
