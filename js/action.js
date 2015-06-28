@@ -116,6 +116,7 @@ function UserInterface(controller){
                               _.each(construct_path(visited), function(vertex){
                                 context.controller.highlight(vertex);
                               });
+                              this.start = 0;
                               return true;
                             }
                             if(_.where(visited, {vertex: vertex}).length > 0){    // vertex is in visited array
