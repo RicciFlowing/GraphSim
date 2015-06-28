@@ -31,6 +31,7 @@ ActionFactory.prototype = {
         _.each(events, function(event){
           document.removeEventListener(event, context.actualListener);
         });
+      this.controller.removeAllHighlights();
     };
     return action;
   }
@@ -141,7 +142,6 @@ function UserInterface(controller){
                   };
   find_shortest_path.customShutdown = function(){
     if(this.start!=0){
-    this.controller.removeAllHighlights();
     this.start = 0;
   }
 };
@@ -165,13 +165,26 @@ create_random_graph.eventListener = function(){
   }
 };
 
+
+var highlight_neighbours = action_factory.getAction("vertex_selected");
+highlight_neighbours.eventListener = function(vertex_event){
+  this.controller.removeAllHighlights();
+  var vertex = vertex_event.vertex;
+  var context = this;
+  var neighbours = this.controller.graph.getNeighbours(vertex);
+  _.each(neighbours, function(vertex){
+    context.controller.highlight(vertex);
+  });
+};
+
   this.actions = {
     add_vertex:         add_vertex,
     remove_vertex:      remove_vertex,
     add_edge:           add_edge,
     remove_edge:        remove_edge,
     find_shortest_path: find_shortest_path,
-    create_random_graph: create_random_graph
+    create_random_graph: create_random_graph,
+    highlight_neighbours: highlight_neighbours
     };
 
   add_vertex.init();
