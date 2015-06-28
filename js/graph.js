@@ -35,6 +35,7 @@ Graph.prototype = {
     this.adjacent.set(1,vertex.id,vertex.id);
     model_added.model = vertex;
     document.dispatchEvent(model_added);
+    return vertex;
   },
   addEdge: function(start, end){
     var edge = new Edge(start, end);

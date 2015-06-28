@@ -146,7 +146,33 @@ function UserInterface(controller){
   }
 };
 
-  this.actions = {add_vertex: add_vertex, remove_vertex: remove_vertex, add_edge: add_edge, remove_edge: remove_edge, find_shortest_path: find_shortest_path };
+var create_random_graph = action_factory.getAction("point_selected");
+create_random_graph.eventListener = function(){
+  var vertices = [];
+  for(var i = 0; i<10; i++){
+    var x = Math.random()*800;
+    var y = Math.random()*500;
+    var vertex = this.controller.graph.addVertex(x,y);
+    vertices.push(vertex);
+  }
+
+  for(var k = 0; k<10; k++){
+    for(var j = 0; j<10; j++){
+      if(Math.random() > 0.86){
+        this.controller.graph.addEdge(vertices[k], vertices[j]);
+      }
+    }
+  }
+};
+
+  this.actions = {
+    add_vertex:         add_vertex,
+    remove_vertex:      remove_vertex,
+    add_edge:           add_edge,
+    remove_edge:        remove_edge,
+    find_shortest_path: find_shortest_path,
+    create_random_graph: create_random_graph
+    };
 
   add_vertex.init();
   this.current_action = add_vertex;
