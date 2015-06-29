@@ -154,6 +154,7 @@ function UserInterface(controller){
 
 var create_random_graph = action_factory.getAction("point_selected");
 create_random_graph.eventListener = function(){
+  this.controller.graph.clear();
   var vertices = [];
   for(var i = 0; i<10; i++){
     var x = Math.random()*800;

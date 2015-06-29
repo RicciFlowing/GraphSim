@@ -86,6 +86,13 @@ Graph.prototype = {
     });
     return neighbours;
   },
+  clear: function(){
+    var context = this;
+    _.each(this.vertices,function(vertex){ //Remove all vertices. RemoveVertex removes also neighboured edges.
+          context.removeVertex(vertex);
+    });
+  },
+
 };
 
 var graph = new Graph();
