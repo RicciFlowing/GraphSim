@@ -22,30 +22,23 @@
 <div class="row">
         <ul class= "list-group col-sm-2">
           <li class= "list-group-item"> <h4> Graph Editing </h4> </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('add_vertex')"> Add Vertex </a>  </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('remove_vertex')"> Remove Vertex </a>  </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('add_edge')"> Add Edge </a> </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('remove_edge')"> Remove Edge </a> </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('highlight_neighbours')"> Highlight Neigbours </a> </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.setAction('add_vertex')"> Add Vertex </a>  </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.setAction('remove_vertex')"> Remove Vertex </a>  </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.setAction('add_edge')"> Add Edge </a> </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.setAction('remove_edge')"> Remove Edge </a> </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.setAction('highlight_neighbours')"> Highlight Neigbours </a> </li>
           <li class= "list-group-item"> <h4> Algorithms </h4> </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('find_shortest_path')"> Find shortest Path </a> </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.ui.setAction('create_random_graph')"> Create a random Graph </a> </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.setAction('find_shortest_path')"> Find shortest Path </a> </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.setAction('create_random_graph')"> Create a random Graph </a> </li>
           <li class= "list-group-item">  </li>
-          <li class= "list-group-item"> <a onclick="GraphSim.getGraph().clear()" > Clear Graph</a> </li>
+          <li class= "list-group-item"> <a onclick="GraphSim.clear()" > Clear Graph</a> </li>
         </ul>
         <div class="col-sm-10">
          <canvas id="canvas" width= "1000px" height="800px" ></canvas>
       </div>
 </div>
-    <script src="js/vendor/underscore.js"></script>
-    <script src="js/vendor/ocanvas-2.7.3.js"></script>
-    <script src="js/vendor/boostrap.js"></script>
-    <script src="js/matrix.js"></script>
-    <script src="js/graph.js"></script>
-    <script src="js/view.js"></script>
-    <script src="js/controller.js"></script>
-    <script src="js/action.js"></script>
-    <script src="js/ui.js"></script>
-    <script src="js/main.js"></script>
+    <script  src="js/vendor/ocanvas.js"></script>
+    <script  src="js/vendor/underscore.js"></script>
+    <script data-main="js/main.js" src="js/vendor/require.js"></script>
   </body>
 </html>

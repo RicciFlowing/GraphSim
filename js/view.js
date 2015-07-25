@@ -1,42 +1,10 @@
-GraphSim = (function(oldModule){
-var canvas = oCanvas.create({canvas: "#canvas"});
-
-oldModule.canvas = canvas;
-
-function Template(canvas){
-  this.canvas = canvas;
-};
-
-Template.prototype ={
-  getVertexShape: function(){
-    return this.canvas.display.ellipse({
-          radius: 15,
-          fill: "#079"
-        });
-  },
-  getEdgeShape: function(){
-     return this.canvas.display.line({
-      stroke: "3px #079",
-      cap: "round"
-    });
-  }
-};
+define(['./template'],function(Template){
 
 
-var point_selected = new Event("point_selected");
 var vertex_selected = new Event("vertex_selected");
 var edge_selected = new Event("edge_selected");
 
-var canvas = oldModule.canvas;
-canvas.bind("click", function(){
-  point_selected.point = {x: canvas.mouse.x, y: canvas.mouse.y};
-  document.dispatchEvent(point_selected);
-});
-
-
-var template = new Template(oldModule.canvas);
-
-var View = function(model){
+var View = function(model, template){
   this.model = model;
   this.template = template;
   this.setShape();
@@ -76,17 +44,10 @@ View.prototype = {
   }
 };
 
-oldModule.View = View;
-oldModule.setCanvas = function(canvas_id){
-  canvas = oCanvas.create({canvas: canvas_id});
-  oldModule.canvas.bind("click", function(){
-    point_selected.point = {x: canvas.mouse.x, y: canvas.mouse.y};
-    document.dispatchEvent(point_selected);
-  });
-};
 
 
 
-return oldModule;
 
-})(GraphSim);
+return View;
+
+});

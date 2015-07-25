@@ -1,28 +1,30 @@
-GraphSim = (function(oldModule){
+define(['./view'], function(View){
 
-function Controller(graph){
-  this.views = [];
+function Controller(graph, canvas, template){
+  this.canvas = canvas;
   this.graph = graph;
+  this.template = template;
+  this.views = [];
   document.addEventListener("model_added", this.render.bind(this));
   document.addEventListener("model_removed", this.removeView.bind(this));
 };
 
 Controller.prototype = {
   createView: function(model){
-       var view = new GraphSim.View(model);
+       var view = new View(model, this.template);
        this.views.push(view);
        return view;
   },
   render: function(event){
       var view = this.createView(event.model);
       var shape = view.getShape();
-      GraphSim.canvas.addChild(shape);
+      this.canvas.addChild(shape);
       if(view.model.type == "edge"){
         shape.zIndex = "back";
       }
     },
     redraw: function(){
-      GraphSim.canvas.redraw();
+      this.canvas.redraw();
     },
 
   highlight: function(model){
@@ -45,16 +47,14 @@ Controller.prototype = {
   },
   removeView: function(event){
     var view = _.findWhere(this.views, {model: event.model});
-    GraphSim.canvas.removeChild(view.getShape());
+    this.canvas.removeChild(view.getShape());
     this.views = _.difference(this.views);
-    GraphSim.canvas.redraw();
+    this.canvas.redraw();
   }
 
 
 };
 
-oldModule.controller = new Controller(GraphSim.getGraph());
+return Controller;
 
-return oldModule;
-
-})(GraphSim);
+});

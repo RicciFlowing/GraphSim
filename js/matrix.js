@@ -1,4 +1,4 @@
-var Matrix = (function(){
+define(function(){
 
 function Matrix(){
   this.elements = [];
@@ -86,4 +86,4 @@ Matrix.prototype = {
 
 return Matrix;
 
-})();
+});

@@ -1,4 +1,4 @@
-var GraphSim = (function(){
+define(['matrix'],function(matrix){
 
 var id_counter = 0;
 
@@ -22,7 +22,7 @@ function Edge(start_vertex, end_vertex, directed ){
 function Graph(){
   this.vertices = [];
   this.edges = [];
-  this.adjacent = Matrix.Zero(1);
+  this.adjacent = matrix.Zero(1);
 };
 
 var model_added = new Event("model_added");
@@ -95,8 +95,6 @@ Graph.prototype = {
 
 };
 
-var graph = new Graph();
+return Graph;
 
-return { getGraph: function(){return graph;}};
-
-})();
+});

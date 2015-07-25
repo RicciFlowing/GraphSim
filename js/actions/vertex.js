@@ -1,40 +1,44 @@
-(function()
-var action_factory = GraphSim.getActionFactory(this.controller);
+define(['../action_factory'],function(ActionFactory){
 
-/////
-// Add Vertex Action
-////
+return function(controller){
+  var action_factory = new ActionFactory(controller);
 
-var add_vertex = action_factory.getAction("point_selected");
-add_vertex.eventListener = function(point_event){
-                  this.controller.graph.addVertex(point_event.point.x,point_event.point.y);
-                };
+  /////
+  // Add Vertex
+  ////
 
-/////
-// Remove Vertex Action
-////
+  var add_vertex = action_factory.getAction("point_selected");
+  add_vertex.eventListener = function(point_event){
+                    this.controller.graph.addVertex(point_event.point.x,point_event.point.y);
+                  };
+  /////
+  // Remove Vertex
+  ////
 
-var remove_vertex = action_factory.getAction("vertex_selected");
-remove_vertex.eventListener = function(vertex_event){
-                  this.controller.graph.removeVertex(vertex_event.vertex);
-                };
+  var remove_vertex = action_factory.getAction("vertex_selected");
+  remove_vertex.eventListener = function(vertex_event){
+                    this.controller.graph.removeVertex(vertex_event.vertex);
+                  };
+  ////
+  // Highlight Vertex
+  ////
 
-/////
-// Highlight Vertex Action
-////
+  var highlight_neighbours = action_factory.getAction("vertex_selected");
+  highlight_neighbours.eventListener = function(vertex_event){
+                                              this.controller.removeAllHighlights();
+                                              var vertex = vertex_event.vertex;
+                                              var context = this;
+                                              var neighbours = this.controller.graph.getNeighbours(vertex);
+                                              _.each(neighbours, function(vertex){
+                                                context.controller.highlight(vertex);
+                                              });
+                                            };
 
+  return {
+  add_vertex: add_vertex,
+  remove_vertex: remove_vertex,
+  highlight_neighbours: highlight_neighbours
+}
+}
 
-var highlight_neighbours = action_factory.getAction("vertex_selected");
-highlight_neighbours.eventListener = function(vertex_event){
-                                            this.controller.removeAllHighlights();
-                                            var vertex = vertex_event.vertex;
-                                            var context = this;
-                                            var neighbours = this.controller.graph.getNeighbours(vertex);
-                                            _.each(neighbours, function(vertex){
-                                              context.controller.highlight(vertex);
-                                            });
-                                          };
-
-
-
-})();
+});
