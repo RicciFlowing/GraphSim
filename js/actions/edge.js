@@ -1,7 +1,7 @@
 define(['../action_factory'],function(ActionFactory){
 
-return function(controller){
-var action_factory = new ActionFactory(controller);
+return function(interface){
+var action_factory = new ActionFactory(interface.controller);
 
 var add_edge = action_factory.getAction("vertex_selected");
 add_edge.start = 0;
@@ -31,9 +31,8 @@ remove_edge.eventListener= function(edge_event){
                  this.controller.graph.removeEdge(edge_to_remove);
                 };
 
-return {
-  add_edge: add_edge,
-  remove_edge: remove_edge
-};
+interface.registerAction('add_edge',add_edge );
+interface.registerAction('remove_edge',remove_edge );
+return true;
 };
 });

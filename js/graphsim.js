@@ -11,21 +11,10 @@ define([ 'graph', 'controller','userinterface', 'template', 'actions/vertex', 'a
     var controller = new Controller(graph, canvas, new Template(canvas));
     var interface = new UserInterface(controller);
 
-    var vertex_actions = vertex_action_init(controller);
+    vertex_action_init(interface);
+    edge_action_init(interface);
+    algorithm_action_init(interface);
 
-    interface.registerAction("add_vertex", vertex_actions.add_vertex);
-    interface.registerAction("remove_vertex", vertex_actions.remove_vertex);
-    interface.registerAction("highlight_neighbours", vertex_actions.highlight_neighbours);
-
-    var edge_actions = edge_action_init(controller);
-
-    interface.registerAction('add_edge',edge_actions.add_edge );
-    interface.registerAction('remove_edge',edge_actions.remove_edge );
-
-    var algorithm_actions = algorithm_action_init(controller);
-
-    interface.registerAction('find_shortest_path',algorithm_actions.find_shortest_path );
-    interface.registerAction('create_random_graph',algorithm_actions.create_random_graph );
 
     return {
       setAction: interface.setAction.bind(interface),

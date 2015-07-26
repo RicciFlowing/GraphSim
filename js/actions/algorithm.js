@@ -1,7 +1,7 @@
 define(['../action_factory'], function(ActionFactory){
 
-return function(controller){
-var action_factory = new ActionFactory(controller);
+return function(interface){
+var action_factory = new ActionFactory(interface.controller);
 
 var find_shortest_path = action_factory.getAction("vertex_selected");
 find_shortest_path.start = 0;
@@ -94,10 +94,10 @@ create_random_graph.eventListener = function(){
   }
 };
 
-return {
-  find_shortest_path: find_shortest_path,
-  create_random_graph: create_random_graph
-};
+interface.registerAction('find_shortest_path',find_shortest_path );
+interface.registerAction('create_random_graph',create_random_graph );
+
+return true
 };
 
 });

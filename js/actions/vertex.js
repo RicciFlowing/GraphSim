@@ -1,7 +1,7 @@
 define(['../action_factory'],function(ActionFactory){
 
-return function(controller){
-  var action_factory = new ActionFactory(controller);
+return function(interface){
+  var action_factory = new ActionFactory(interface.controller);
 
   /////
   // Add Vertex
@@ -34,11 +34,11 @@ return function(controller){
                                               });
                                             };
 
-  return {
-  add_vertex: add_vertex,
-  remove_vertex: remove_vertex,
-  highlight_neighbours: highlight_neighbours
-}
+interface.registerAction("add_vertex", add_vertex);
+interface.registerAction("remove_vertex", remove_vertex);
+interface.registerAction("highlight_neighbours", highlight_neighbours);
+
+  return true;
 }
 
 });
